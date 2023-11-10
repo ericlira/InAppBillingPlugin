@@ -161,6 +161,11 @@ namespace Plugin.InAppBilling
                 .SetProductId(p)
                 .Build()).ToList();
 
+            if (productList == null || productList.Count == 0)
+            {
+                return Enumerable.Empty<InAppBillingProduct>();
+            }
+
             var skuDetailsParams = QueryProductDetailsParams.NewBuilder().SetProductList(productList);
 
             var skuDetailsResult = await BillingClient.QueryProductDetailsAsync(skuDetailsParams.Build());
@@ -326,8 +331,8 @@ namespace Plugin.InAppBilling
             {
                 return null;
             }
-            
-            if(!string.IsNullOrWhiteSpace(obfuscatedProfileId) && string.IsNullOrWhiteSpace(obfuscatedAccountId))
+
+            if (!string.IsNullOrWhiteSpace(obfuscatedProfileId) && string.IsNullOrWhiteSpace(obfuscatedAccountId))
                 throw new ArgumentNullException("You must set an account id if you are setting a profile id");
 
             switch (itemType)
